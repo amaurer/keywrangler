@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+	<head>
+		<meta charset="utf-8">
+		<meta http-equiv="X-UA-Compatible" content="IE=edge">
+		<title>Key Wrangler Example</title>
+		<meta name="description" content="">
+		<meta name="viewport" content="width=device-width, initial-scale=1">
+		<link rel="stylesheet" type="text/css" href="//netdna.bootstrapcdn.com/bootstrap/3.1.0/css/bootstrap.min.css">
+		<script src="//ajax.googleapis.com/ajax/libs/jquery/1.10.2/jquery.min.js"></script>
+		<script src="keyWrangler.js"></script>
+		<style>
+			.product {
+				min-width: 376px;
+				margin: 0px 3px 3px 0px;
+				padding: 2px 4px;
+				background-color: #eaeaea;
+			}
+			.product-active {
+				background-color: green;	
+			}
+			.product-selected {
+				background-color: yellow;
+			}
+		</style>
+	</head>
+	<body>
+	
+		<h1>Key Wrangler Example</h1>
+
+		<div id="navigation" class="container">
+			<div class="row">
+
+				<div id="product-container" class="col-md-12 pull-right">
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product product-active">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+					<div class="pull-left product">
+						<h4>Test</h4>
+					</div>
+
+				</div>
+
+			</div>
+		</div>
+
+
+		<script>
+
+			(function($){
+
+				var $products = $("#product-container");
+
+				function productSelectForward(){
+					if($products.find(".product-active").is(":last-child")){
+						$products.find(".product").first().addClass("product-active");
+						$products.find(".product-active").last().removeClass("product-active");
+					} else {
+						$products.find(".product-active").next().addClass("product-active").prev().removeClass("product-active");
+					};
+				};
+
+				function productSelectBack(){
+					if($products.find(".product-active").is(":first-child")){
+						$products.find(".product").last().addClass("product-active");
+						$products.find(".product-active").first().removeClass("product-active");
+					} else {
+						$products.find(".product-active").prev().addClass("product-active").next().removeClass("product-active");
+					};
+				};
+
+				function selectToggle(){
+					var $el = $products.find(".product-active").first();
+					$el[ ($el.hasClass("product-selected"))? "removeClass" : "addClass" ]("product-selected");
+				}
+
+				$("body").keyWrangler({
+					log : true,
+					onNav : function(e){
+						e.preventDefault();
+
+						if(e.keyCode === 9){
+							if(e.shiftKey){
+								productSelectBack();
+							} else {
+								productSelectForward();
+							};
+						} else if(e.keyCode === 37 || e.keyCode === 38){
+							productSelectBack();
+						} else if (e.keyCode === 39 || e.keyCode === 40){
+							productSelectForward();
+						};
+
+						return false;
+					},
+					onSubmit : selectToggle
+				});
+
+			})(jQuery);
+
+		</script>
+
+	</body>
+</html>
+
